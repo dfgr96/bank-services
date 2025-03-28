@@ -1,4 +1,4 @@
-package com.bank.account_service.controller;
+package com.bank.transaction_service.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,7 @@ public class HealthController {
 
     @GetMapping
     public Map<String, String> checkHealth() {
-        return Map.of("status account-service", "UP");
+        return Map.of("status transaction-service", "UP");
     }
 
 }
