@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   mysql:
-    image: mysql:8.0  # Usamos la versión 8.0 de MySQL
+    image: mysql:8.0
     container_name: mysql-db
     restart: always
     environment:
@@ -16,11 +16,38 @@ services:
       - mysql_data:/var/lib/mysql
 
   rabbitmq:
-    image: rabbitmq:3.9-management  # Usamos la versión 3.9 de RabbitMQ con UI de administración
+    image: rabbitmq:3.9-management
     container_name: rabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
+
+  account-service:
+    build: ./account-service
+    container_name: account-service
+    depends_on:
+      - mysql
+      - rabbitmq
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bankdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+
+  transaction-service:
+    build: ./transaction-service
+    container_name: transaction-service
+    depends_on:
+      - mysql
+      - rabbitmq
+      - account-service
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/bankdb
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
 
 volumes:
   mysql_data:
