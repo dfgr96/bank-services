@@ -3,6 +3,7 @@ package com.bank.transaction_service.service;
 import com.bank.transaction_service.model.Transaction;
 import com.bank.transaction_service.repository.TransactionRepository;
 import com.example.AccountDTO;
+import com.example.TransactionDTO;
 import com.example.UpdateBalanceDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,10 +16,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
     private final AccountService accountService;
+    private final TransactionEventPublisher eventPublisher;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountService accountService) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountService accountService, TransactionEventPublisher eventPublisher) {
         this.transactionRepository = transactionRepository;
         this.accountService = accountService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Override
@@ -37,7 +40,16 @@ public class TransactionServiceImpl implements TransactionService {
         updateAccountBalance(toAcc.getId(), newBalanceTo);
 
         Transaction transaction = new Transaction(fromAccount, toAccount, amount);
-        return transactionRepository.save(transaction);
+        Transaction savedTransaction = transactionRepository.save(transaction);
+
+        TransactionDTO transactionDTO = new TransactionDTO(
+                savedTransaction.getFromAccount(),
+                savedTransaction.getToAccount(),
+                savedTransaction.getMonto()
+        );
+        eventPublisher.publishTransactionEvent(transactionDTO);
+
+        return savedTransaction;
     }
 
     @Override
