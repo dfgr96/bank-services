@@ -1,8 +1,8 @@
 package com.bank.account_service.controller;
 
-import com.bank.account_service.dto.AccountRequestDTO;
 import com.bank.account_service.model.Account;
 import com.bank.account_service.service.AccountService;
+import com.example.AccountRequestDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
