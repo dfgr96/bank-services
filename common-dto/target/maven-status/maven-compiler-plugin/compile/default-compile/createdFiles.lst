@@ -1,4 +1,5 @@
 com/example/UpdateBalanceDTO.class
 com/example/AccountDTO.class
 com/example/TransactionRequestDTO.class
+com/example/TransactionDTO.class
 com/example/AccountRequestDTO.class
