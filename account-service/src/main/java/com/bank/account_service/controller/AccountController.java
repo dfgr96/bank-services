@@ -3,6 +3,7 @@ package com.bank.account_service.controller;
 import com.bank.account_service.model.Account;
 import com.bank.account_service.service.AccountService;
 import com.example.AccountRequestDTO;
+import com.example.UpdateBalanceDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,5 +27,11 @@ public class AccountController {
     @GetMapping("/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable Integer id) {
         return ResponseEntity.ok(accountService.getAccountById(id));
+    }
+
+    @PutMapping("/update-balance")
+    public ResponseEntity<String> updateBalance(@RequestBody UpdateBalanceDTO request) {
+        accountService.updateBalance(request);
+        return ResponseEntity.ok("Saldo actualizado correctamente.");
     }
 }
