@@ -1,4 +1,4 @@
-package com.bank.account_service.dto;
+package com.example;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
